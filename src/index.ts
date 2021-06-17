@@ -5,17 +5,32 @@ import { Page, Browser, PaperFormat, PDFOptions } from 'puppeteer'
 
 class Generator {
     async execute(content: string, filename: string) {
-        const browser: Browser = await puppeteer.launch({ headless: true })
-        const page: Page = await browser.newPage()
-        const defaultOptions: PDFOptions = { printBackground: true, format: 'a4' }
-        await page.setContent(content)
-
-        // await page.emulateMediaType('screen')
-        // await page.pdf({ path: filename, printBackground: true, format: 'a4' })
-        console.log(await (await page['pdf'](defaultOptions)).toString('base64'))
-        browser.close()
+        try {
+            const browser: Browser = await puppeteer.launch({ 
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox'
+                ],
+                executablePath: 'google-chrome-stable' 
+            })
+            console.log('After initializing browser')
+            const page: Page = await browser.newPage()
+            console.log('New page created')
+            const defaultOptions: PDFOptions = { printBackground: true, format: 'a4' }
+            console.log('Setting the content')
+            await page.setContent(content)
+    
+            // await page.emulateMediaType('screen')
+            console.log('Before generating PDF')
+            await page.pdf({ path: filename, printBackground: true, format: 'a4' })
+            // console.log(await (await page['pdf'](defaultOptions)).toString('base64'))
+            browser.close()
+        } catch (e) {
+            console.log(`Error generating the PDF: ${e}`)
+        }
     }
 }
+
 
 const app: Application = express();
 app.use(express.json({ limit: '50mb' }))
@@ -31,7 +46,7 @@ app.get("/", (req: Request, res: Response) => {
 app.post('/', (req: Request, res: Response) => {
     const gen = new Generator();
     // let buff = Buffer.from(req.body.content, 'base64').toString('utf8');
-    gen.execute(req.body.content, 'via_method.pdf');
+    gen.execute(req.body.content, 'tmp/via_method.pdf');
     return res.json({ "content": req.body.content })
 })
 
