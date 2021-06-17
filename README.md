@@ -1,6 +1,6 @@
 # PDF Render
 
-It's an HTTP service that will convert an html into PDF
+It's an HTTP service that will convert a HTML string to PDF
 
 ## Installation
 
