@@ -24,7 +24,7 @@ docker-compose up
 Generate a PDF from HTML markup
 
 ```
-POST / 
+POST /
 content="<div>Hello World</div>"
 filename="pdf_example.pdf"
 toBase64=true
@@ -36,4 +36,14 @@ toBase64=true
 **toBase64** - Boolean - Whether it should respond with a base64 encoded string for the pdf (e.g. to attach to an email provider)
 
 **filename** - String - The filename that the PDF file will be created.
+
+
+## Infrastructure
+
+We manage all resources via Terraform.
+
+```shell
+terraform -chdir=terraform init
+terraform -chdir=terraform apply
+```
 
