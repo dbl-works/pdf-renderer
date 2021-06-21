@@ -6,15 +6,16 @@ export class Generator {
   content: string
   filename: string
   saveFile: boolean
+  pdfMarkup: string
 
   constructor(content: string, filename: string = `pdf_${Date.now}`, saveFile: boolean = true) {
       this.content = content
       this.filename = filename
       this.saveFile = saveFile
+      this.pdfMarkup = ''
   }
 
-  async execute(): Promise<string> {
-    let result: string = ''
+  async execute(): Promise<void> {
     
     const pdfContent: Buffer = await this.generatePDF()
     
@@ -22,10 +23,8 @@ export class Generator {
       // Storing the file in S3
       StoreFile.store(pdfContent, this.filename)
     } else {
-      result = pdfContent.toString('base64')
+      this.pdfMarkup = pdfContent.toString('base64')
     }
-
-    return new Promise<string>( resolve => { resolve(result) })
   }
  
   private async generatePDF(): Promise<Buffer> {
