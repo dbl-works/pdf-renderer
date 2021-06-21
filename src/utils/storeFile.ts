@@ -8,8 +8,6 @@ export class StoreFile {
                 throw new Error('AWS_BUCKET_NAME environment variable not available')
             }
 
-            console.log(content)
-
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,
                 Key: filename,

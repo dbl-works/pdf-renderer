@@ -17,11 +17,12 @@ export class Generator {
     let result: string = ''
     
     const pdfContent: Buffer = await this.generatePDF()
-    result = pdfContent.toString('base64')
-
+    
     if (this.saveFile == true) {
       // Storing the file in S3
       StoreFile.store(pdfContent, this.filename)
+    } else {
+      result = pdfContent.toString('base64')
     }
 
     return new Promise<string>( resolve => { resolve(result) })
