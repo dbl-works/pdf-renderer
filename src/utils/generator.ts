@@ -8,8 +8,11 @@ export class Generator {
   saveFile: boolean
   pdfMarkup: string
 
-  constructor(content: string, filename: string = `pdf_${Date.now}`, saveFile: boolean = true) {
+  constructor(content: string, filename: string = `${Date.now()}`, saveFile: boolean = true) {
       this.content = content
+      if (!filename.match(/\.pdf$/)) {
+        filename += '.pdf'
+      }
       this.filename = filename
       this.saveFile = saveFile
       this.pdfMarkup = ''
