@@ -103,5 +103,10 @@ dist
 # TernJS port file
 .tern-port
 
+# Terraform
+.terraform
+*.lock.hcl
+
+# Other
 tmp/
 .DS_Store

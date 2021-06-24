@@ -1,0 +1,3 @@
+locals {
+  project = "pdf-render"
+}
