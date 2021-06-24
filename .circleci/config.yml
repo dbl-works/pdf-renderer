@@ -1,0 +1,41 @@
+version: 2.1
+parameters:
+  node-version:
+    type: string
+    default: "14.17"
+
+# Majority of our jobs require the same setup
+# https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
+commands:
+  checkout_yarn_install:
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+      - run: yarn install
+
+# Re-usable job bases
+job_default: &job_default
+  docker:
+    - image: cimg/node:<< pipeline.parameters.node-version >>
+
+
+
+jobs:
+  yarn:
+    <<: *job_default
+    steps:
+      - checkout_yarn_install
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+          paths:
+            - node_modules
+
+
+
+workflows:
+  version: 2
+  full-stack:
+    jobs:
+      - yarn
