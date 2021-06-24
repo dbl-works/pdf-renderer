@@ -10,14 +10,13 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post('/', async(req: Request, res: Response) => {
   const pdfGenerator = new Generator(req.body.content, req.body.filename, req.body.saveFile)
-  console.log(pdfGenerator.filename)
 
-  // const result = await pdfGenerator.execute()
-  // if (pdfGenerator.saveFile) {
-  //   res.json({ filename: pdfGenerator.filename })
-  // } else {
-  //   res.json({ content: pdfGenerator.pdfMarkup })
-  // }
+  const result = await pdfGenerator.execute()
+  if (pdfGenerator.saveFile) {
+    res.json({ filename: pdfGenerator.filename })
+  } else {
+    res.json({ content: pdfGenerator.pdfMarkup })
+  }
 })
 
 app.listen(5000, () => {
