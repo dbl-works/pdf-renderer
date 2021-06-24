@@ -31,6 +31,16 @@ jobs:
           key: yarn-{{ checksum "yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
           paths:
             - node_modules
+  build:
+    <<: *job_default
+    steps:
+      - checkout_yarn_install
+      - run: yarn build
+  lint:
+    <<: *job_default
+    steps:
+      - checkout_yarn_install
+      - run: yarn lint
 
 
 
@@ -39,3 +49,12 @@ workflows:
   default:
     jobs:
       - yarn
+  full-stack:
+    jobs:
+      - yarn
+      - build:
+          requires:
+            - yarn
+      - lint:
+          requires:
+            - yarn
