@@ -19,10 +19,26 @@ docker-compose build
 docker-compose up
 ```
 
+If you prefer running the code in your system
+
+```
+yarn run dev
+```
+
 ### Environment variables
 ```
 AWS_BUCKET_NAME
 ```
+
+#### AWS
+
+To store the files to AWS we need to config the system to use `aws-sdk`
+
+```
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+```
+(this will need to be provided to you)
 
 ## API Reference
 
