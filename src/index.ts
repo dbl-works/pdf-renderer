@@ -1,7 +1,7 @@
 import express, { Request, Response, Application } from 'express'
 import Generator from './utils/generator'
 
-const app: Application = express();
+const app: Application = express()
 app.use(express.json({ limit: '50mb' }))
 app.get('/', (req: Request, res: Response) => res.send(`API Running...${req.query.content}`))
 
