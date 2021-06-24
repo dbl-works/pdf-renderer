@@ -36,6 +36,6 @@ jobs:
 
 workflows:
   version: 2
-  full-stack:
+  default:
     jobs:
       - yarn
