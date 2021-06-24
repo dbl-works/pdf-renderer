@@ -1,6 +1,6 @@
 import express, { Request, Response, Application } from 'express'
 
-import { Generator } from './utils/generator'
+import Generator from './utils/generator'
 
 const app: Application = express()
 app.use(express.json({ limit: '50mb' }))
@@ -9,7 +9,8 @@ app.get('/', (req: Request, res: Response) => res.send(`API Running...${req.quer
 app.post('/', async (req: Request, res: Response) => {
   const pdfGenerator = new Generator(req.body.content, req.body.filename, req.body.saveFile)
 
-  const result = await pdfGenerator.execute()
+  await pdfGenerator.execute()
+
   if (pdfGenerator.saveFile) {
     res.json({ filename: pdfGenerator.filename })
   } else {
@@ -18,6 +19,7 @@ app.post('/', async (req: Request, res: Response) => {
 })
 
 app.listen(5000, () => {
+  // eslint-disable-next-line no-console
   console.log(
     ' 📡 Backend server: '
       + ` Running in dev mode on port ${5000}`,

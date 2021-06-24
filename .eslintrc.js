@@ -6,6 +6,9 @@ module.exports = {
   extends: [
     'airbnb-base',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -22,5 +25,13 @@ module.exports = {
     semi: ['error', 'never'],
     indent: 'off',
     '@typescript-eslint/indent': [2, 2],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        ts: 'never',
+      },
+    ],
   },
 }

@@ -1,8 +1,16 @@
 import puppeteer, { Page, Browser, PDFOptions } from 'puppeteer'
 
-import { StoreFile } from './storeFile'
+import storeFile from './storeFile'
 
-export class Generator {
+const validateFilename = (filename: string): string => {
+  if (!filename.match(/\.pdf$/i)) {
+    return `${filename}.pdf`
+  }
+
+  return filename
+}
+
+export default class Generator {
   content: string
 
   filename: string
@@ -13,10 +21,7 @@ export class Generator {
 
   constructor(content: string, filename = `${Date.now()}`, saveFile = true) {
     this.content = content
-    if (!filename.match(/\.pdf$/)) {
-      filename += '.pdf'
-    }
-    this.filename = filename
+    this.filename = validateFilename(filename)
     this.saveFile = saveFile
     this.pdfMarkup = ''
   }
@@ -24,9 +29,9 @@ export class Generator {
   async execute(): Promise<void> {
     const pdfContent: Buffer = await this.generatePDF()
 
-    if (this.saveFile == true) {
+    if (this.saveFile) {
       // Storing the file in S3
-      StoreFile.store(pdfContent, this.filename)
+      storeFile(pdfContent, this.filename)
     } else {
       this.pdfMarkup = pdfContent.toString('base64')
     }
@@ -54,9 +59,10 @@ export class Generator {
       pdfContent = await page.pdf(defaultOptions)
       browser.close()
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(`Error generating the PDF: ${e}`)
-    } finally {
-      return new Promise<Buffer>((resolve) => { resolve(pdfContent) })
     }
+
+    return new Promise<Buffer>((resolve) => { resolve(pdfContent) })
   }
 }
