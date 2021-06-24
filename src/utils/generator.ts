@@ -1,25 +1,27 @@
-import puppeteer from 'puppeteer'
-import { Page, Browser, PDFOptions } from 'puppeteer'
+import puppeteer, { Page, Browser, PDFOptions } from 'puppeteer'
+
 import { StoreFile } from './storeFile'
 
 export class Generator {
   content: string
+
   filename: string
+
   saveFile: boolean
+
   pdfMarkup: string
 
-  constructor(content: string, filename: string = `${Date.now()}`, saveFile: boolean = true) {
-      this.content = content
-      if (!filename.match(/\.pdf$/)) {
-        filename += '.pdf'
-      }
-      this.filename = filename
-      this.saveFile = saveFile
-      this.pdfMarkup = ''
+  constructor(content: string, filename = `${Date.now()}`, saveFile = true) {
+    this.content = content
+    if (!filename.match(/\.pdf$/)) {
+      filename += '.pdf'
+    }
+    this.filename = filename
+    this.saveFile = saveFile
+    this.pdfMarkup = ''
   }
 
   async execute(): Promise<void> {
-
     const pdfContent: Buffer = await this.generatePDF()
 
     if (this.saveFile == true) {
@@ -38,9 +40,9 @@ export class Generator {
       browser = await puppeteer.launch({
         args: [
           '--no-sandbox',
-          '--disable-setuid-sandbox'
+          '--disable-setuid-sandbox',
         ],
-        executablePath: 'google-chrome-stable'
+        executablePath: 'google-chrome-stable',
       })
 
       const page: Page = await browser.newPage()
@@ -49,13 +51,12 @@ export class Generator {
       // Assign the provided content to the page
       await page.setContent(this.content)
 
-      pdfContent = await page['pdf'](defaultOptions)
+      pdfContent = await page.pdf(defaultOptions)
       browser.close()
-
     } catch (e) {
       console.log(`Error generating the PDF: ${e}`)
     } finally {
-      return new Promise<Buffer>(resolve => { resolve(pdfContent) })
+      return new Promise<Buffer>((resolve) => { resolve(pdfContent) })
     }
   }
 }
