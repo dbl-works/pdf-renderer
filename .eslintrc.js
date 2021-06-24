@@ -22,5 +22,13 @@ module.exports = {
     semi: ['error', 'never'],
     indent: 'off',
     '@typescript-eslint/indent': [2, 2],
+    'import/extensions': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
   },
 }
