@@ -46,4 +46,3 @@ We manage all resources via Terraform.
 terraform -chdir=terraform init
 terraform -chdir=terraform apply
 ```
-
