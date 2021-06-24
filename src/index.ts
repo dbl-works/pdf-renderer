@@ -5,7 +5,7 @@ const app: Application = express()
 app.use(express.json({ limit: '50mb' }))
 app.get('/', (req: Request, res: Response) => res.send(`API Running...${req.query.content}`))
 
-app.post('/', async (req: Request, res: Response) => {
+app.post('/', async(req: Request, res: Response) => {
   const pdfGenerator = new Generator(req.body.content, req.body.filename, req.body.saveFile)
 
   await pdfGenerator.execute()
