@@ -19,6 +19,11 @@ docker-compose build
 docker-compose up
 ```
 
+### Environment variables
+```
+AWS_BUCKET_NAME
+```
+
 ## API Reference
 
 Generate a PDF from HTML markup
