@@ -34,7 +34,7 @@ RUN npm i puppeteer \
 WORKDIR /usr/src/app
 COPY --chown=pptruser:pptruser . .
 COPY --chown=pptruser:pptruser package.json package-lock.json
-RUN yarn install    
+RUN yarn install
 
 # Run everything after as non-privileged user.
 USER pptruser
