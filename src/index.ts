@@ -14,14 +14,15 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post('/', async(req: Request, res: Response) => {
-  const pdfGenerator = new Generator(req.body.content, req.body.filename, req.body.saveFile === 'true')
+  const saveFile = typeof(req.body.saveFile) === 'boolean' ? req.body.saveFile : req.body.saveFile === 'true'
+  const pdfGenerator = new Generator(req.body.content, req.body.filename, saveFile)
+
   const result = await pdfGenerator.execute()
   if (pdfGenerator.saveFile) {
     res.json({ filename: pdfGenerator.filename })
   } else {
     res.json({ content: pdfGenerator.pdfMarkup })
   }
-  
 })
 
 app.listen(5000, () => {
