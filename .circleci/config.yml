@@ -4,6 +4,10 @@ parameters:
     type: string
     default: "14.17"
 
+orbs:
+  aws-cli: circleci/aws-cli@2.0.0
+  aws-ecr: circleci/aws-ecr@7.0.0
+
 # Majority of our jobs require the same setup
 # https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
 commands:
@@ -41,6 +45,21 @@ jobs:
     steps:
       - checkout_yarn_install
       - run: yarn lint
+  docker:
+    machine:
+      image: ubuntu-2004:202101-01
+      docker_layer_caching: true
+    environment:
+      AWS_ACCOUNT_ID: "272343518667"
+      AWS_REGION: "eu-central-1"
+      AWS_ECR_ACCOUNT_URL: "272343518667.dkr.ecr.eu-central-1.amazonaws.com"
+    steps:
+      - checkout
+      - aws-cli/install
+      - aws-ecr/build-image:
+          repo: pdf-render
+          tag: commit-${CIRCLE_SHA1}
+          extra-build-args: '--build-arg="GIT_SHA=${CIRCLE_SHA1}"'
 
 
 
@@ -58,3 +77,4 @@ workflows:
       - lint:
           requires:
             - yarn
+      - docker
