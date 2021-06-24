@@ -4,19 +4,13 @@ import { Generator } from './utils/generator'
 
 const app: Application = express();
 app.use(express.json({ limit: '50mb' }))
-app.use(express.urlencoded({
-  extended: true,
-  limit: '50mb'
-}))
-
 app.get("/", (req: Request, res: Response) => {
   return res.send(`API Running...${req.query.content}`);
 });
 
 app.post('/', async(req: Request, res: Response) => {
-  const saveFile = typeof(req.body.saveFile) === 'boolean' ? req.body.saveFile : req.body.saveFile === 'true'
-  const filename = req.body.filename.match(/\.pdf$/) ? req.body.filename : req.body.filename + '.pdf'
-  const pdfGenerator = new Generator(req.body.content, filename, saveFile)
+  const filename = req.body.filename && req.body.filename.match(/\.pdf$/) ? req.body.filename : req.body.filename + '.pdf'
+  const pdfGenerator = new Generator(req.body.content, filename, req.body.saveFile)
 
   const result = await pdfGenerator.execute()
   if (pdfGenerator.saveFile) {
