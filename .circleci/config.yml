@@ -68,9 +68,6 @@ workflows:
   default:
     jobs:
       - yarn
-  full-stack:
-    jobs:
-      - yarn
       - build:
           requires:
             - yarn
