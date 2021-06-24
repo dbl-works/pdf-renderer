@@ -15,7 +15,8 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post('/', async(req: Request, res: Response) => {
   const saveFile = typeof(req.body.saveFile) === 'boolean' ? req.body.saveFile : req.body.saveFile === 'true'
-  const pdfGenerator = new Generator(req.body.content, req.body.filename, saveFile)
+  const filename = req.body.filename.match(/\.pdf$/) ? req.body.filename : req.body.filename + '.pdf'
+  const pdfGenerator = new Generator(req.body.content, filename, saveFile)
 
   const result = await pdfGenerator.execute()
   if (pdfGenerator.saveFile) {
