@@ -19,9 +19,9 @@ export class Generator {
   }
 
   async execute(): Promise<void> {
-    
+
     const pdfContent: Buffer = await this.generatePDF()
-    
+
     if (this.saveFile == true) {
       // Storing the file in S3
       StoreFile.store(pdfContent, this.filename)
@@ -29,7 +29,7 @@ export class Generator {
       this.pdfMarkup = pdfContent.toString('base64')
     }
   }
- 
+
   private async generatePDF(): Promise<Buffer> {
     let pdfContent: Buffer
     let browser: Browser
