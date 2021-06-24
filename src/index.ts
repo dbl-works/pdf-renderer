@@ -9,7 +9,11 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post('/', async(req: Request, res: Response) => {
-  const filename = req.body.filename && req.body.filename.match(/\.pdf$/) ? req.body.filename : req.body.filename + '.pdf'
+  let filename = req.body.filename || Date.now().toString()
+  if (!filename.match(/\.pdf$/)) { 
+    filename += '.pdf' 
+  }
+  
   const pdfGenerator = new Generator(req.body.content, filename, req.body.saveFile)
 
   const result = await pdfGenerator.execute()
