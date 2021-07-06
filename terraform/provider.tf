@@ -9,5 +9,5 @@ terraform {
 
 provider "aws" {
   profile = "reveneo"
-  region = "eu-central-1"
+  region  = "eu-central-1"
 }

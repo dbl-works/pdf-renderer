@@ -2,7 +2,7 @@ resource "aws_iam_user" "app-pdf-render-dev" {
   name = "app-pdf-render-dev"
 
   tags = {
-    Project = local.project
+    Project     = local.project
     Environment = "development"
   }
 }
@@ -51,6 +51,6 @@ resource "aws_iam_policy" "s3-pdf-render-dev-usage" {
 EOF
 }
 resource "aws_iam_user_policy_attachment" "s3-pdf-render-dev-usage" {
-  user = aws_iam_user.app-pdf-render-dev.name
+  user       = aws_iam_user.app-pdf-render-dev.name
   policy_arn = aws_iam_policy.s3-pdf-render-dev-usage.arn
 }
