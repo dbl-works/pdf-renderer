@@ -67,3 +67,16 @@ We manage all resources via Terraform.
 terraform -chdir=terraform init
 terraform -chdir=terraform apply
 ```
+
+## Deployment
+
+### Using AWS ECR as container registry
+```shell
+docker build -t localhost/pdf-render-service .
+
+GIT_SHA="$(git rev-parse HEAD)"
+
+aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+docker tag localhost/pdf-render-service $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT-pdf-render-service:commit-$GIT_SHA
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT-pdf-render-service:commit-$GIT_SHA
+```
