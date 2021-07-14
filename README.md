@@ -76,9 +76,13 @@ terraform -chdir=terraform apply
 ```shell
 docker build -t localhost/pdf-render-service .
 
-GIT_SHA="$(git rev-parse HEAD)"
+git fetch --all --tags
+LATEST_RELEASE="$(git describe --abbrev=0 --tags)"
+AWS_REGION=eu-central-1
+AWS_PROFILE=
+AWS_ACCOUNT_ID=
 
 aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-docker tag localhost/pdf-render-service $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT-pdf-render-service:commit-$GIT_SHA
-docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT-pdf-render-service:commit-$GIT_SHA
+docker tag localhost/pdf-render-service $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pdf-render-service:$LATEST_RELEASE
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pdf-render-service:$LATEST_RELEASE
 ```
