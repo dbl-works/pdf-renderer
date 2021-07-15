@@ -10,20 +10,21 @@ Because it's a docker image, it can be installed anywhere
 
 To try out locally:
 
-```
+```shell
 docker build -t pdf-render-service .
 docker run --name pdf-render -d -p 5000:5000 pdf-render-service
 ```
+
 if you prefer `docker-compose`
 
-```
+```shell
 docker-compose build
 docker-compose up
 ```
 
 If you prefer running the code in your system
 
-```
+```shell
 yarn run dev
 ```
 
@@ -50,15 +51,15 @@ Generate a PDF from HTML markup
 POST /
 content="<div>Hello World</div>"
 filename="pdf_example.pdf"
-toBase64=true
+saveFile=true
 ```
 
 ### Parameters
 **content(required)** - String - Html markup that will be converted to a PDF
 
-**toBase64** - Boolean - Whether it should respond with a base64 encoded string for the pdf (e.g. to attach to an email provider)
+**saveFile(optional)** - Boolean, `true` by default - Whether it should respond with a base64 encoded string for the pdf (e.g. to attach to an email provider) or upload the file as PDF to AWS S3
 
-**filename** - String - The filename that the PDF file will be created.
+**filename(optional)** - String, current timestamp by default - The filename that the PDF file will be created.
 
 
 ## Infrastructure
