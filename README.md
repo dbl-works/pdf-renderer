@@ -28,6 +28,18 @@ If you prefer running the code in your system
 yarn run dev
 ```
 
+on macOS you'll have to comment out `executablePath` in `src/utils/generator.ts`; Pupeteer will pick up the correct executable path for Chrome (likely `/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome`):
+
+```javascript
+      browser = await puppeteer.launch({
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
+        // executablePath: 'google-chrome-stable',
+      })
+```
+
 ### Environment variables
 ```
 AWS_BUCKET_NAME
