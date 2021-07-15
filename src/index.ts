@@ -8,6 +8,7 @@ app.get('/', (req: Request, res: Response) => res.send(`API Running...${req.quer
 // default health check endpoint for ECS tasks
 app.get('/healthz', (req: Request, res: Response) => res.send('\u2713'))
 
+// @TODO: respond with error code if something goes wrong rather than an empty string
 app.post('/', async (req: Request, res: Response) => {
   const pdfGenerator = new Generator(req.body.content, req.body.filename, req.body.saveFile)
 
