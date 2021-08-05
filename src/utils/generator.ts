@@ -37,15 +37,31 @@ export default class Generator {
   private async generatePDF(): Promise<Buffer> {
     let pdfContent: Buffer
     let browser: Browser
+    const isLocal = process.env.NODE_ENV === 'development'
+    let puppeteerOptions: any
 
-    try {
-      browser = await puppeteer.launch({
+    // locally (at least on macOS), puppeteer can detect the correct path automatically,
+    // which is probably found at /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
+    // if we pass the default for Linux, puppeteer fails.
+    if (isLocal) {
+      puppeteerOptions = {
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
+      }
+    } else {
+      puppeteerOptions = {
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
         ],
         executablePath: 'google-chrome-stable',
-      })
+      }
+    }
+
+    try {
+      browser = await puppeteer.launch(puppeteerOptions)
 
       const page: Page = await browser.newPage()
       const defaultOptions: PDFOptions = { printBackground: true, format: 'a4' }
