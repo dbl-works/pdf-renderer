@@ -25,10 +25,10 @@ docker-compose up
 If you prefer running the code in your system
 
 ```shell
-yarn run dev
+NODE_ENV=development yarn run dev
 ```
 
-on macOS you'll have to comment out `executablePath` in `src/utils/generator.ts`; Pupeteer will pick up the correct executable path for Chrome (likely `/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome`):
+passing `NODE_ENV=development` will let puppeteer auto-detect the executable path, which is different from the hardcoded path, that is specifc for a Linux deploy.
 
 ```javascript
       browser = await puppeteer.launch({
