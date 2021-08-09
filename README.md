@@ -25,10 +25,18 @@ docker-compose up
 If you prefer running the code in your system
 
 ```shell
-NODE_ENV=development yarn run dev
+yarn run dev
 ```
 
-passing `NODE_ENV=development` will let puppeteer auto-detect the executable path, which is different from the hardcoded path, that is specifc for a Linux deploy.
+or
+
+```shell
+yarn run local
+```
+
+which runs `NODE_ENV=development yarn run dev`.
+
+Passing `NODE_ENV=development` will let puppeteer auto-detect the executable path, which is different from the hardcoded path, that is specifc for a Linux deploy.
 
 ```javascript
       browser = await puppeteer.launch({
