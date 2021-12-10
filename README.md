@@ -95,6 +95,8 @@ terraform -chdir=terraform apply
 
 ### Using AWS ECR as container registry
 ```shell
+yarn build
+
 docker build -t localhost/pdf-render-service .
 
 git fetch --all --tags
