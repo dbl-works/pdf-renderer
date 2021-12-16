@@ -2,7 +2,7 @@ version: 2.1
 parameters:
   node-version:
     type: string
-    default: "14.17"
+    default: "16.13"
 
 orbs:
   aws-cli: circleci/aws-cli@2.0.0
