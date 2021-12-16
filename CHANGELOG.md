@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- Updated all dependcies (solves 158 CVE issues), [#132](https://github.com/lh-innovationhub/pdf-render/pull/132)
+- Updated all dependcies (solves 23 from 158 CVE issues, solves 8/10 with "high" severity), [#132](https://github.com/lh-innovationhub/pdf-render/pull/132)
 - Upgraded Node from 14 -> 16 (current LTS) for the docker image
 
 ## [0.2.0] - 2021-08-05
