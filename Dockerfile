@@ -36,6 +36,8 @@ RUN groupadd -r pptruser \
 WORKDIR /usr/src/app
 COPY --chown=pptruser:pptruser . .
 COPY --chown=pptruser:pptruser package.json yarn.lock
+
+ARG NODE_ENV=production
 RUN yarn install
 
 # Run everything after as non-privileged user.
@@ -43,4 +45,4 @@ USER pptruser
 
 EXPOSE 5000
 
-CMD ["yarn", "run", "dev"]
+CMD ["yarn", "run", "production"]

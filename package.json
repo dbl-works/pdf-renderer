@@ -1,6 +1,6 @@
 {
   "name": "pdf-render",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
@@ -8,6 +8,7 @@
     "watch-ts": "tsc -w",
     "server": "nodemon dist/index.js",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Typescript,Node\" -c \"blue.bold,yellow.bold\" \"yarn run watch-ts\" \"yarn run server\" ",
+    "production": "NODE_ENV=production node dist/index.js",
     "local": "NODE_ENV=development yarn run dev ",
     "lint": "eslint --ext .js,.ts,.vue src"
   },

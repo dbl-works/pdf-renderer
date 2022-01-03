@@ -21,7 +21,7 @@ app.post('/', async (req: Request, res: Response) => {
 })
 
 app.listen(5000, () => {
-  const mode = process.env.NODE_ENV === 'development' ? 'dev' : 'non-dev'
+  const mode = process.env.NODE_ENV || 'dev'
   // eslint-disable-next-line no-console
   console.log(
     ' 📡 Backend server: '
