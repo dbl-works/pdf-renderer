@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased]
+### Changed
+- the task for docker now runs the server using vanilla `node` instead of `nodemon` along with more stuff utilizing `concurrently`. We observed, that puppeteer can crash, but nodemon prevents us from restrting since it waits for file changes (which aren't going to happen in production).
 
 
 ## [0.2.1] - 2021-12-16
