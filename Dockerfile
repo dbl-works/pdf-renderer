@@ -43,4 +43,4 @@ USER pptruser
 
 EXPOSE 5000
 
-CMD ["yarn", "run", "dev"]
+CMD ["yarn", "run", "production"]
