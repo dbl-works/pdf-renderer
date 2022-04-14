@@ -1,3 +1,0 @@
-locals {
-  project = "pdf-render"
-}
