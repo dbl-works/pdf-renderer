@@ -24,6 +24,10 @@ docker-compose up
 
 If you prefer running the code in your system
 
+:warning: macOS Monterey runs the ControlCenter on port 5000, hence you **must** change that!
+
+Prepend e.g. `PORT=5001` to the command
+
 ```shell
 yarn run dev
 ```

@@ -20,11 +20,14 @@ app.post('/', async (req: Request, res: Response) => {
   }
 })
 
-app.listen(5000, () => {
+// @NOTE: macOS Monterey runs the ControlCenter on port 5000
+const PORT = process.env.PORT || 5000
+
+app.listen(PORT, () => {
   const mode = process.env.NODE_ENV || 'dev'
   // eslint-disable-next-line no-console
   console.log(
     ' 📡 Backend server: '
-    + ` Running in ${mode} mode on port ${5000}`,
+    + ` Running in ${mode} mode on port ${PORT}`,
   )
 })
