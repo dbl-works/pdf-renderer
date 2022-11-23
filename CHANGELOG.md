@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2022-11-23
+### Changed
+- updated dependencies
+- upgraded node from version 16 (EOL) to 18 (LTS)
+- updated download URL for google content as per their documentation
+- do not use `sudo` to install dependencies in Docker (failed to compile with sudo on latest version)
 
 
 ## [0.3.0] - 2022-01-03
