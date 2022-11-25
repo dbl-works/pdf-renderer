@@ -1,0 +1,74 @@
+version: 2.1
+parameters:
+  node-version:
+    type: string
+    default: "18.12"
+
+
+
+commands:
+  checkout_yarn_install:
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+      - run: yarn install
+
+# Re-usable job bases
+job_default: &job_default
+  docker:
+    - image: cimg/node:<< pipeline.parameters.node-version >>
+
+
+
+jobs:
+  yarn:
+    <<: *job_default
+    steps:
+      - checkout_yarn_install
+      - save_cache:
+          key: yarn-{{ checksum "yarn.lock" }}-{{ .Environment.CACHE_VERSION }}
+          paths:
+            - node_modules
+  build:
+    <<: *job_default
+    steps:
+      - checkout_yarn_install
+      - run: yarn build
+  lint:
+    <<: *job_default
+    steps:
+      - checkout_yarn_install
+      - run: yarn lint
+  docker_build:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+      - run: |
+          docker build -t dblworks/pdf-renderer .
+          docker run --name pdf-renderer -d -p 5017:5017 dblworks/pdf-renderer
+          curl --retry 5 --retry-connrefused http://localhost:5017/healthz
+          curl --retry 5 --retry-connrefused http://localhost:5017/livez
+          curl --retry 5 --retry-connrefused http://localhost:5017/readyz
+          curl --retry 5 --retry-connrefused -X POST -d "<html><p>Hello World</p></html>" http://localhost:5017
+
+
+
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - yarn
+      - build:
+          requires:
+            - yarn
+      - lint:
+          requires:
+            - yarn
+      - docker_build:
+          requires:
+            - build
+            - lint
