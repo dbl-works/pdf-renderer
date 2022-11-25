@@ -1,8 +1,13 @@
 # PDF Renderer
 
+https://hub.docker.com/repository/docker/dblworks/pdf-renderer
+
+
 It's an HTTP service that will convert a HTML string to PDF. It uses [Puppeteer](https://pptr.dev/) under the hood, which means rendering is performed by Chromium's render engine; thus the HTML sent to this service should be developed and tested using Chrome/Chromium.
 
 Read more about technical details of Puppeteer on their [Github repo](https://github.com/puppeteer/puppeteer).
+
+
 
 ## Installation
 
