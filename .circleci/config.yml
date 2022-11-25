@@ -2,14 +2,10 @@ version: 2.1
 parameters:
   node-version:
     type: string
-    default: "16.13"
+    default: "18.12"
 
-orbs:
-  aws-cli: circleci/aws-cli@2.0.0
-  aws-ecr: circleci/aws-ecr@7.0.0
 
-# Majority of our jobs require the same setup
-# https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
+
 commands:
   checkout_yarn_install:
     steps:
@@ -45,21 +41,23 @@ jobs:
     steps:
       - checkout_yarn_install
       - run: yarn lint
-  docker:
-    machine:
-      image: ubuntu-2004:202101-01
-      docker_layer_caching: true
-    environment:
-      AWS_ACCOUNT_ID: "272343518667"
-      AWS_REGION: "eu-central-1"
-      AWS_ECR_ACCOUNT_URL: "272343518667.dkr.ecr.eu-central-1.amazonaws.com"
+  docker_build:
+    docker:
+      - image: cimg/base:2022.06
     steps:
       - checkout
-      - aws-cli/install
-      - aws-ecr/build-image:
-          repo: pdf-render
-          tag: commit-${CIRCLE_SHA1}
-          extra-build-args: '--build-arg="GIT_SHA=${CIRCLE_SHA1}"'
+      - setup_remote_docker
+      - run:
+          name: build and run docker image, test the API endpoints
+          command: |
+            docker build -t dblworks/pdf-renderer .
+            docker run --name pdf-renderer -d -p 5017:5017 dblworks/pdf-renderer
+            # @TODO(lud, 25.11.2022): figure out how we can test this on CI:
+            # curl --retry 5 --retry-connrefused http://localhost:5017/healthz
+            # curl --retry 5 --retry-connrefused http://localhost:5017/livez
+            # curl --retry 5 --retry-connrefused http://localhost:5017/readyz
+            # curl --retry 5 --retry-connrefused -X POST -d "<html><p>Hello World</p></html>" http://localhost:5017
+
 
 
 
@@ -74,4 +72,7 @@ workflows:
       - lint:
           requires:
             - yarn
-      - docker
+      - docker_build:
+          requires:
+            - build
+            - lint

@@ -1,4 +1,4 @@
-# PDF Render
+# PDF Renderer
 
 It's an HTTP service that will convert a HTML string to PDF. It uses [Puppeteer](https://pptr.dev/) under the hood, which means rendering is performed by Chromium's render engine; thus the HTML sent to this service should be developed and tested using Chrome/Chromium.
 
@@ -11,22 +11,15 @@ Because it's a docker image, it can be installed anywhere
 To try out locally:
 
 ```shell
-docker build -t pdf-render-service .
-docker run --name pdf-render -d -p 5000:5000 pdf-render-service
-```
-
-if you prefer `docker-compose`
-
-```shell
-docker-compose build
-docker-compose up
+docker build -t pdf-renderer .
+docker run --name pdf-renderer -d -p 5017:5017 pdf-renderer
 ```
 
 If you prefer running the code in your system
 
-:warning: macOS Monterey runs the ControlCenter on port 5000, hence you **must** change that!
+:warning: macOS Monterey runs the ControlCenter on port 5000.
 
-Prepend e.g. `PORT=5001` to the command
+Prepend e.g. `PORT=5017` to the command
 
 ```shell
 yarn run dev
@@ -86,14 +79,32 @@ saveFile=true
 **filename(optional)** - String, current timestamp by default - The filename that the PDF file will be created.
 
 
-## Infrastructure
 
-We manage all resources via Terraform.
+## Building
+
+On a x86 chip
+```shell
+docker build -t dblworks/pdf-renderer:$TAGNAME .
+```
+
+On a ARM chip (for a x86 target):
 
 ```shell
-terraform -chdir=terraform init
-terraform -chdir=terraform apply
+docker build -t dblworks/pdf-renderer:$TAGNAME . --platform amd64
 ```
+
+
+
+## Publishing
+
+```shell
+git fetch --all --tags
+TAGNAME="$(git describe --abbrev=0 --tags)"
+
+docker push dblworks/pdf-renderer:$TAGNAME
+```
+
+
 
 ## Deployment
 
@@ -101,7 +112,7 @@ terraform -chdir=terraform apply
 ```shell
 yarn build
 
-docker build -t localhost/pdf-render-service .
+docker build -t localhost/pdf-renderer .
 
 git fetch --all --tags
 LATEST_RELEASE="$(git describe --abbrev=0 --tags)"
@@ -110,6 +121,6 @@ AWS_PROFILE=
 AWS_ACCOUNT_ID=
 
 aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-docker tag localhost/pdf-render-service $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pdf-render-service:$LATEST_RELEASE
-docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pdf-render-service:$LATEST_RELEASE
+docker tag localhost/pdf-renderer $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pdf-renderer:$LATEST_RELEASE
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/pdf-renderer:$LATEST_RELEASE
 ```

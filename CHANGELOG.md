@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2022-11-25
+### Changed
+- use port `5017` instead of `5000` due to conflicts with other services (e.g. on macOS Monterey)
+- rename package from `pdf-render` to `pdf-renderer`
+
+### Added
+- document how to deploy to Docker Hub
+
+
+
 ## [0.4.0] - 2022-11-23
 ### Changed
 - updated dependencies

@@ -46,6 +46,6 @@ RUN yarn install
 # Run everything after as non-privileged user.
 USER pptruser
 
-EXPOSE 5000
+EXPOSE 5017
 
 CMD ["yarn", "run", "production"]
