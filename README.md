@@ -1,4 +1,4 @@
-# PDF Render
+# PDF Renderer
 
 It's an HTTP service that will convert a HTML string to PDF. It uses [Puppeteer](https://pptr.dev/) under the hood, which means rendering is performed by Chromium's render engine; thus the HTML sent to this service should be developed and tested using Chrome/Chromium.
 
@@ -12,7 +12,7 @@ To try out locally:
 
 ```shell
 docker build -t pdf-renderer .
-docker run --name pdf-render -d -p 5017:5017 pdf-renderer
+docker run --name pdf-renderer -d -p 5017:5017 pdf-renderer
 ```
 
 If you prefer running the code in your system
@@ -77,6 +77,21 @@ saveFile=true
 **saveFile(optional)** - Boolean, `true` by default - Whether it should respond with a base64 encoded string for the pdf (e.g. to attach to an email provider) or upload the file as PDF to AWS S3
 
 **filename(optional)** - String, current timestamp by default - The filename that the PDF file will be created.
+
+
+
+## Building
+
+On a x86 chip
+```shell
+docker build -t dblworks/pdf-renderer:$TAGNAME .
+```
+
+On a ARM chip (for a x86 target):
+
+```shell
+docker build -t dblworks/pdf-renderer:$TAGNAME . --platform amd64
+```
 
 
 
