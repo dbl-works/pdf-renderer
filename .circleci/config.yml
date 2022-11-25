@@ -47,13 +47,15 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: |
-          docker build -t dblworks/pdf-renderer .
-          # docker run --name pdf-renderer -d -p 5017:5017 dblworks/pdf-renderer
-          # curl --retry 5 --retry-connrefused http://localhost:5017/healthz
-          # curl --retry 5 --retry-connrefused http://localhost:5017/livez
-          # curl --retry 5 --retry-connrefused http://localhost:5017/readyz
-          # curl --retry 5 --retry-connrefused -X POST -d "<html><p>Hello World</p></html>" http://localhost:5017
+      - run:
+          name: build and run docker image, test the API endpoints
+          command: |
+            docker build -t dblworks/pdf-renderer .
+            docker run --name pdf-renderer -d -p 5017:5017 dblworks/pdf-renderer
+            # curl --retry 5 --retry-connrefused http://localhost:5017/healthz
+            # curl --retry 5 --retry-connrefused http://localhost:5017/livez
+            # curl --retry 5 --retry-connrefused http://localhost:5017/readyz
+            # curl --retry 5 --retry-connrefused -X POST -d "<html><p>Hello World</p></html>" http://localhost:5017
 
 
 
