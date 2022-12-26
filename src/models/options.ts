@@ -1,4 +1,4 @@
-import Format from "./format";
+import Format from './format'
 
 export default class Options {
   content: string;
@@ -15,16 +15,16 @@ export default class Options {
     content: string,
     filename = `${Date.now()}`,
     saveFile = true,
-    format = new Format()
+    format = new Format(),
   ) {
-    this.content = content;
-    this.saveFile = saveFile;
-    this.pdfMarkup = "";
-    this.filename = filename;
-    this.format = format;
+    this.content = content
+    this.saveFile = saveFile
+    this.pdfMarkup = ''
+    this.filename = filename
+    this.format = format
 
     if (!this.filename.match(/\.pdf$/)) {
-      this.filename += ".pdf";
+      this.filename += '.pdf'
     }
   }
 }
