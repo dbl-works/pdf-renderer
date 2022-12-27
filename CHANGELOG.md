@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-12-27
+### Added
+- Support for landscape PDFs, [#197](https://github.com/dbl-works/pdf-renderer/pull/197)
+
+
+
 ## [1.0.0] - 2022-11-25
 ### Changed
 - use port `5017` instead of `5000` due to conflicts with other services (e.g. on macOS Monterey)
