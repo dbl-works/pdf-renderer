@@ -74,6 +74,7 @@ POST /
 content="<div>Hello World</div>"
 filename="pdf_example.pdf"
 saveFile=true
+format={"landscape": false}
 ```
 
 ### Parameters
@@ -82,6 +83,13 @@ saveFile=true
 **saveFile(optional)** - Boolean, `true` by default - Whether it should respond with a base64 encoded string for the pdf (e.g. to attach to an email provider) or upload the file as PDF to AWS S3
 
 **filename(optional)** - String, current timestamp by default - The filename that the PDF file will be created.
+
+**format(optional)** - Object, `{}` by default.
+```json
+{
+  "landscape": false, // - Boolean, `false` by default - Whether the PDF should be in landscape mode
+}
+```
 
 
 

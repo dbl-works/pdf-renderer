@@ -1,24 +1,15 @@
 import puppeteer, { Page, Browser, PDFOptions } from 'puppeteer'
 import StoreFile from './storeFile'
+import Options from '../models/options'
 
 export default class Generator {
-  content: string
+  content: string;
 
-  filename: string
+  options: Options;
 
-  saveFile: boolean
-
-  pdfMarkup: string
-
-  constructor(content: string, filename = `${Date.now()}`, saveFile = true) {
+  constructor(content: string, options: Options) {
     this.content = content
-    this.saveFile = saveFile
-    this.pdfMarkup = ''
-    this.filename = filename
-
-    if (!this.filename.match(/\.pdf$/)) {
-      this.filename += '.pdf'
-    }
+    this.options = options
   }
 
   async execute(): Promise<void> {
@@ -26,11 +17,11 @@ export default class Generator {
 
     // @TODO: return early if pdfContent is undefined (possible if generatePDF fails)
 
-    if (this.saveFile === true) {
+    if (this.options.saveFile === true) {
       // Storing the file in S3
-      StoreFile.store(pdfContent, this.filename)
+      StoreFile.store(pdfContent, this.options.filename)
     } else {
-      this.pdfMarkup = pdfContent.toString('base64')
+      this.options.pdfMarkup = pdfContent.toString('base64')
     }
   }
 
@@ -45,17 +36,11 @@ export default class Generator {
     // if we pass the default for Linux, puppeteer fails.
     if (isLocal) {
       puppeteerOptions = {
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       }
     } else {
       puppeteerOptions = {
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
         executablePath: 'google-chrome-stable',
       }
     }
@@ -64,7 +49,11 @@ export default class Generator {
       browser = await puppeteer.launch(puppeteerOptions)
 
       const page: Page = await browser.newPage()
-      const defaultOptions: PDFOptions = { printBackground: true, format: 'a4' }
+      const defaultOptions: PDFOptions = {
+        format: 'a4',
+        landscape: this.options.format.landscape,
+        printBackground: true,
+      }
 
       // Assign the provided content to the page
       await page.setContent(this.content)
@@ -75,6 +64,8 @@ export default class Generator {
       console.log(`Error generating the PDF: ${e}`)
     }
 
-    return new Promise<Buffer>((resolve) => { resolve(pdfContent) })
+    return new Promise<Buffer>((resolve) => {
+      resolve(pdfContent)
+    })
   }
 }
