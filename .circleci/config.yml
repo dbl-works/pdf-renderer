@@ -41,12 +41,13 @@ jobs:
     steps:
       - checkout_yarn_install
       - run: yarn lint
-  docker_build:
+  docker_build_and_test:
     docker:
       - image: cimg/base:current
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Build docker image
           command: docker build -t dblworks/pdf-renderer .
@@ -72,7 +73,7 @@ workflows:
       - lint:
           requires:
             - yarn
-      - docker_build:
+      - docker_build_and_test:
           requires:
             - build
             - lint
