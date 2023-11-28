@@ -15,7 +15,10 @@ export default class Generator {
   async execute(): Promise<void> {
     const pdfContent: Buffer = await this.generatePDF()
 
-    // @TODO: return early if pdfContent is undefined (possible if generatePDF fails)
+    if (!pdfContent) {
+      console.log('Failed to generate PDF content.')
+      return
+    }
 
     if (this.options.saveFile === true) {
       // Storing the file in S3
