@@ -1,13 +1,10 @@
 # PDF Renderer
 
-https://hub.docker.com/repository/docker/dblworks/pdf-renderer
-
+[Docker/dblworks/pdf-renderer](https://hub.docker.com/r/dblworks/pdf-renderer)
 
 It's an HTTP service that will convert a HTML string to PDF. It uses [Puppeteer](https://pptr.dev/) under the hood, which means rendering is performed by Chromium's render engine; thus the HTML sent to this service should be developed and tested using Chrome/Chromium.
 
 Read more about technical details of Puppeteer on their [Github repo](https://github.com/puppeteer/puppeteer).
-
-
 
 ## Installation
 
@@ -51,7 +48,8 @@ Passing `NODE_ENV=development` will let puppeteer auto-detect the executable pat
 ```
 
 ### Environment variables
-```
+
+```shell
 AWS_BUCKET_NAME
 ```
 
@@ -59,17 +57,18 @@ AWS_BUCKET_NAME
 
 To store the files to AWS we need to config the system to use `aws-sdk`
 
-```
+```shell
 AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 ```
+
 (this will need to be provided to you)
 
 ## API Reference
 
 Generate a PDF from HTML markup
 
-```
+```shell
 POST /
 content="<div>Hello World</div>"
 filename="pdf_example.pdf"
@@ -78,6 +77,7 @@ format={"landscape": false}
 ```
 
 ### Parameters
+
 **content(required)** - String - Html markup that will be converted to a PDF
 
 **saveFile(optional)** - Boolean, `true` by default - Whether it should respond with a base64 encoded string for the pdf (e.g. to attach to an email provider) or upload the file as PDF to AWS S3
@@ -85,17 +85,17 @@ format={"landscape": false}
 **filename(optional)** - String, current timestamp by default - The filename that the PDF file will be created.
 
 **format(optional)** - Object, `{}` by default.
+
 ```json
 {
   "landscape": false, // - Boolean, `false` by default - Whether the PDF should be in landscape mode
 }
 ```
 
-
-
 ## Building
 
 On a x86 chip
+
 ```shell
 docker build -t dblworks/pdf-renderer:$TAGNAME .
 ```
@@ -106,8 +106,6 @@ On a ARM chip (for a x86 target):
 docker build -t dblworks/pdf-renderer:$TAGNAME . --platform linux/amd64
 ```
 
-
-
 ## Publishing
 
 ```shell
@@ -117,11 +115,10 @@ TAGNAME="$(git describe --abbrev=0 --tags)"
 docker push dblworks/pdf-renderer:$TAGNAME
 ```
 
-
-
 ## Deployment
 
 ### Using AWS ECR as container registry
+
 ```shell
 yarn build
 
