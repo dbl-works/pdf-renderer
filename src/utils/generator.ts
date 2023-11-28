@@ -45,6 +45,9 @@ export default class Generator {
       }
     }
 
+    // https://developer.chrome.com/articles/new-headless/
+    puppeteerOptions.headless = 'new'
+
     try {
       browser = await puppeteer.launch(puppeteerOptions)
 

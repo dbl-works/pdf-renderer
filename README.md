@@ -39,6 +39,7 @@ Passing `NODE_ENV=development` will let puppeteer auto-detect the executable pat
 
 ```javascript
       browser = await puppeteer.launch({
+        headless: 'new',
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
