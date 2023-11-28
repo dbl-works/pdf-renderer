@@ -103,7 +103,7 @@ docker build -t dblworks/pdf-renderer:$TAGNAME .
 On a ARM chip (for a x86 target):
 
 ```shell
-docker build -t dblworks/pdf-renderer:$TAGNAME . --platform amd64
+docker build -t dblworks/pdf-renderer:$TAGNAME . --platform linux/amd64
 ```
 
 
