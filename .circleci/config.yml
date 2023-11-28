@@ -52,12 +52,10 @@ jobs:
           name: Build docker image
           command: docker build -t dblworks/pdf-renderer .
       - run:
-          name: Run docker image
-          command: docker run --name pdf-renderer -d -p 5017:5017 dblworks/pdf-renderer
-      - run:
-          name: Test API endpoints
+          name: Run docker image and check the app is running
           command: |
-            curl --retry 3 --retry-connrefused http://localhost:5017/healthz
+            docker run --name pdf-renderer -d -p 5017:5017 dblworks/pdf-renderer
+            sleep 10
             curl --retry 3 --retry-connrefused http://localhost:5017/livez
             curl --retry 3 --retry-connrefused http://localhost:5017/readyz
             curl --retry 3 --retry-connrefused -X POST -d "<html><p>Hello World</p></html>" http://localhost:5017
