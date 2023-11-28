@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [Unreleased]
+## [1.2.0] - 2023-11-28
+- Updated dependencies
+- Upgraded Node from 18 (LTS) to 20 (LTS)
+- Switch to new headless mode
+- don't crash when failing to generate the PDF but log an error
 
 ## [1.1.0] - 2022-12-27
 ### Added
