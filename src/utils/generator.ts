@@ -1,4 +1,4 @@
-import puppeteer, { Page, Browser, PDFOptions } from 'puppeteer'
+import puppeteer, { Page, PDFOptions } from 'puppeteer'
 import StoreFile from './storeFile'
 import Options from '../models/options'
 
