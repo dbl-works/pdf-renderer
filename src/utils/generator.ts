@@ -28,11 +28,34 @@ export default class Generator {
     }
   }
 
+  static async healthCheck(): Promise<boolean> {
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    })
+
+    if (!browser) {
+      return false
+    }
+
+    const page = await browser.newPage()
+
+    await page.setContent('<h1>PDF Generator is running!</h1>')
+
+    const pdfContent = await page.pdf({
+      format: 'a4',
+      landscape: false,
+      printBackground: true,
+    })
+
+    browser.close()
+
+    return !!pdfContent.length
+  }
+
   private async generatePDF(): Promise<Buffer> {
     let pdfContent: Buffer
-    let browser: Browser
     const isLocal = process.env.NODE_ENV === 'development'
-    let puppeteerOptions: any
+    let puppeteerOptions: Record<string, string | string[]>
 
     // locally (at least on macOS), puppeteer can detect the correct path automatically,
     // which is probably found at /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
@@ -52,7 +75,7 @@ export default class Generator {
     puppeteerOptions.headless = 'new'
 
     try {
-      browser = await puppeteer.launch(puppeteerOptions)
+      const browser = await puppeteer.launch(puppeteerOptions)
 
       const page: Page = await browser.newPage()
       const defaultOptions: PDFOptions = {
