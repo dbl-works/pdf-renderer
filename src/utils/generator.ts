@@ -1,4 +1,4 @@
-import puppeteer, { Page, PDFOptions } from 'puppeteer'
+import puppeteer, { Browser, Page, PDFOptions } from 'puppeteer'
 import StoreFile from './storeFile'
 import Options from '../models/options'
 
@@ -41,6 +41,7 @@ export default class Generator {
 
   private async generatePDF(): Promise<Buffer> {
     let pdfContent: Buffer
+    let browser: Browser
     const isLocal = process.env.NODE_ENV === 'development'
     let puppeteerOptions: Record<string, string | string[]>
 
@@ -61,9 +62,8 @@ export default class Generator {
     // https://developer.chrome.com/articles/new-headless/
     puppeteerOptions.headless = 'new'
 
-    const browser = await puppeteer.launch(puppeteerOptions)
-
     try {
+      browser = await puppeteer.launch(puppeteerOptions)
       const page: Page = await browser.newPage()
       const defaultOptions: PDFOptions = {
         format: 'a4',
@@ -75,10 +75,10 @@ export default class Generator {
       await page.setContent(this.content)
 
       pdfContent = await page.pdf(defaultOptions)
+
+      await browser.close()
     } catch (e) {
       console.log(`Error generating the PDF: ${e}`)
-    } finally {
-      await browser.close()
     }
 
     return new Promise<Buffer>((resolve) => {
