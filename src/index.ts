@@ -9,9 +9,10 @@ app.get('/', (req: Request, res: Response) => res.send(`API Running...${req.quer
 
 // health check endpoint for e.g. ECS tasks, following Kubernetes standards
 // see: https://kubernetes.io/docs/reference/using-api/health-checks/
-app.get('/healthz', (req: Request, res: Response) => res.send('\u2713'))
-app.get('/livez', (req: Request, res: Response) => res.send('\u2713'))
-app.get('/readyz', (req: Request, res: Response) => res.send('\u2713'))
+app.get(['/healthz', '/livez', '/readyz'], async (req: Request, res: Response) => {
+  const ok = await Generator.healthCheck()
+  return ok ? res.send('\u2713') : res.status(500).send('\u2717')
+})
 
 // @TODO: respond with error code if something goes wrong rather than an empty string
 app.post('/', async (req: Request, res: Response) => {
@@ -25,11 +26,10 @@ app.post('/', async (req: Request, res: Response) => {
   const pdfGenerator = new Generator(req.body.content, options)
 
   await pdfGenerator.execute()
-  if (options.saveFile) {
-    res.json({ filename: options.filename })
-  } else {
-    res.json({ content: options.pdfMarkup })
-  }
+
+  return options.saveFile
+    ? res.json({ filename: options.filename })
+    : res.json({ content: options.pdfMarkup })
 })
 
 // @NOTE: macOS Monterey runs the ControlCenter on port 5000
