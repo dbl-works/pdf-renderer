@@ -47,7 +47,7 @@ export default class Generator {
       printBackground: true,
     })
 
-    browser.close()
+    await browser.close()
 
     return !!pdfContent.length
   }
