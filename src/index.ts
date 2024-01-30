@@ -17,7 +17,6 @@ app.get(['/healthz', '/livez', '/readyz'], async (req: Request, res: Response) =
 // @TODO: respond with error code if something goes wrong rather than an empty string
 app.post('/', async (req: Request, res: Response) => {
   const options = new Options(
-    req.body.content,
     req.body.filename,
     req.body.saveFile,
     new Format(req.body.format),
