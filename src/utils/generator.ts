@@ -7,9 +7,9 @@ export default class Generator {
 
   options: Options;
 
-  constructor(content: string, options: Options) {
+  constructor(content: string, options?: Options) {
     this.content = content
-    this.options = options
+    this.options = options || new Options()
   }
 
   async execute(): Promise<void> {
@@ -29,25 +29,12 @@ export default class Generator {
   }
 
   static async healthCheck(): Promise<boolean> {
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    })
+    const content = '<h1>PDF Generator is running!</h1>'
+    const generator = new Generator(
+      content,
+    )
 
-    if (!browser) {
-      return false
-    }
-
-    const page = await browser.newPage()
-
-    await page.setContent('<h1>PDF Generator is running!</h1>')
-
-    const pdfContent = await page.pdf({
-      format: 'a4',
-      landscape: false,
-      printBackground: true,
-    })
-
-    await browser.close()
+    const pdfContent = await generator.generatePDF()
 
     return !!pdfContent.length
   }
@@ -74,9 +61,9 @@ export default class Generator {
     // https://developer.chrome.com/articles/new-headless/
     puppeteerOptions.headless = 'new'
 
-    try {
-      const browser = await puppeteer.launch(puppeteerOptions)
+    const browser = await puppeteer.launch(puppeteerOptions)
 
+    try {
       const page: Page = await browser.newPage()
       const defaultOptions: PDFOptions = {
         format: 'a4',
@@ -88,9 +75,10 @@ export default class Generator {
       await page.setContent(this.content)
 
       pdfContent = await page.pdf(defaultOptions)
-      browser.close()
     } catch (e) {
       console.log(`Error generating the PDF: ${e}`)
+    } finally {
+      await browser.close()
     }
 
     return new Promise<Buffer>((resolve) => {
