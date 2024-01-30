@@ -1,8 +1,6 @@
 import Format from './format'
 
 export default class Options {
-  content: string;
-
   filename: string;
 
   saveFile: boolean;
@@ -12,12 +10,10 @@ export default class Options {
   format: Format;
 
   constructor(
-    content: string,
     filename = `${Date.now()}`,
     saveFile = true,
     format = new Format(),
   ) {
-    this.content = content
     this.saveFile = saveFile
     this.pdfMarkup = ''
     this.filename = filename
