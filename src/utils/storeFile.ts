@@ -1,9 +1,9 @@
-import S3 from 'aws-sdk/clients/s3'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 export default class StoreFile {
   static store(content: Buffer, filename: string): void {
     try {
-      const s3 = new S3()
+      const s3Client = new S3Client()
       if (process.env.AWS_BUCKET_NAME === undefined) {
         throw new Error('AWS_BUCKET_NAME environment variable not available')
       }
@@ -15,7 +15,12 @@ export default class StoreFile {
         ContentType: 'application/pdf',
       }
 
-      s3.upload(params, (error: any, data: any) => { console.log(error, data) })
+      const command = new PutObjectCommand(params)
+      s3Client.send(command).then(() => {
+        console.log(`Successfully uploaded data to ${params.Bucket}/${params.Key}`)
+      }).catch((error) => {
+        console.error(`Error when uploading to S3: ${error}`)
+      })
     } catch (e) {
       console.log(`Error when uploading to S3: ${e}`)
     }
