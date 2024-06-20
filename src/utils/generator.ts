@@ -41,7 +41,7 @@ export default class Generator {
 
   private async generatePDF(): Promise<Buffer> {
     let pdfContent: Buffer
-    let browser: Browser
+    let browser: Browser | undefined
     const isLocal = process.env.NODE_ENV === 'development'
     let puppeteerOptions: Record<string, string | string[]>
 
@@ -79,6 +79,8 @@ export default class Generator {
       await browser.close()
     } catch (e) {
       console.log(`Error generating the PDF: ${e}`)
+    } finally {
+      if (browser) await browser.close()
     }
 
     return new Promise<Buffer>((resolve) => {
