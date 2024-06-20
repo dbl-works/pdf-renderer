@@ -64,7 +64,7 @@ export default class Generator {
 
     try {
       browser = await puppeteer.launch(puppeteerOptions)
-      const page: Page = await browser.newPage()
+      const page: Page = (await browser.pages())[0]
       const defaultOptions: PDFOptions = {
         format: 'a4',
         landscape: this.options.format.landscape,
