@@ -35,7 +35,6 @@ export default class Generator {
     )
 
     const pdfContent = await generator.generatePDF()
-
     return !!pdfContent.length
   }
 
@@ -74,11 +73,12 @@ export default class Generator {
       // Assign the provided content to the page
       await page.setContent(this.content)
 
-      pdfContent = await page.pdf(defaultOptions)
-
+      pdfContent = Buffer.from(await page.pdf(defaultOptions))
       await browser.close()
     } catch (e) {
       console.log(`Error generating the PDF: ${e}`)
+      // pdfContent is somehow filled with data from the puppeteer even if it fails
+      pdfContent = Buffer.from('')
     } finally {
       if (browser) await browser.close()
     }
