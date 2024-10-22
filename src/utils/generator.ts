@@ -35,13 +35,12 @@ export default class Generator {
     )
 
     const pdfContent = await generator.generatePDF()
-
     return !!pdfContent.length
   }
 
   private async generatePDF(): Promise<Buffer> {
     let pdfContent: Buffer
-    let browser: Browser
+    let browser: Browser | undefined
     const isLocal = process.env.NODE_ENV === 'development'
     let puppeteerOptions: Record<string, string | string[]>
 
@@ -64,7 +63,7 @@ export default class Generator {
 
     try {
       browser = await puppeteer.launch(puppeteerOptions)
-      const page: Page = await browser.newPage()
+      const page: Page = (await browser.pages())[0]
       const defaultOptions: PDFOptions = {
         format: 'a4',
         landscape: this.options.format.landscape,
@@ -74,11 +73,14 @@ export default class Generator {
       // Assign the provided content to the page
       await page.setContent(this.content)
 
-      pdfContent = await page.pdf(defaultOptions)
-
+      pdfContent = Buffer.from(await page.pdf(defaultOptions))
       await browser.close()
     } catch (e) {
       console.log(`Error generating the PDF: ${e}`)
+      // pdfContent is somehow filled with data from the puppeteer even if it fails
+      pdfContent = Buffer.from('')
+    } finally {
+      if (browser) await browser.close()
     }
 
     return new Promise<Buffer>((resolve) => {

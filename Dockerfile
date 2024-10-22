@@ -1,4 +1,4 @@
-FROM node:20-bullseye-slim
+FROM node:22-bullseye-slim
 
 # Install dependencies and Google Chrome
 # Also install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
