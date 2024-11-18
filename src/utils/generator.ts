@@ -16,6 +16,7 @@ export default class Generator {
     const pdfContent: Buffer = await this.generatePDF()
 
     if (!pdfContent) {
+      // eslint-disable-next-line no-console
       console.log('Failed to generate PDF content.')
       return
     }
@@ -75,9 +76,14 @@ export default class Generator {
 
       pdfContent = Buffer.from(await page.pdf(defaultOptions))
       await browser.close()
-    } catch (e) {
-      console.log(`Error generating the PDF: ${e}`)
-      // pdfContent is somehow filled with data from the puppeteer even if it fails
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error generating PDF:', {
+        message: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        content_length: this.content.length,
+        timestamp: new Date().toISOString(),
+      })
       pdfContent = Buffer.from('')
     } finally {
       if (browser) await browser.close()
