@@ -1,4 +1,5 @@
 import express, { Request, Response, Application } from 'express'
+import { execSync } from 'child_process'
 import Generator from './utils/generator'
 import Options from './models/options'
 import Format from './models/format'
@@ -11,6 +12,27 @@ app.get('/', (req: Request, res: Response) => { res.send(`API Running...${req.qu
 // see: https://kubernetes.io/docs/reference/using-api/health-checks/
 app.get(['/healthz', '/livez', '/readyz'], async (req: Request, res: Response): Promise<void> => {
   const ok = await Generator.healthCheck()
+
+  // Get disk usage using df command
+  try {
+    const dfOutput = execSync('df -h /').toString()
+    const [, usage] = dfOutput.split('\n')
+    const [, size, used, available, percentage] = usage.split(/\s+/)
+
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify({
+      disk_usage: {
+        available,
+        used,
+        total: size,
+        usage_percentage: percentage,
+        timestamp: new Date().toISOString(),
+      },
+    }))
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to get disk usage:', error)
+  }
 
   if (ok) {
     res.send('\u2713')
