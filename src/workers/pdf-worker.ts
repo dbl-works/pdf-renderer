@@ -1,4 +1,5 @@
 import puppeteer, { Browser, PDFOptions } from 'puppeteer'
+import { execSync } from 'child_process'
 
 interface WorkerData {
   content: string
@@ -10,6 +11,19 @@ interface WorkerData {
 
 // Browser instance is scoped to the worker thread
 let browser: Browser | undefined
+
+// Store Chrome path globally
+let chromePath: string | undefined
+
+// Find Chrome path at startup
+function findChromePath(): string {
+  try {
+    return execSync('which google-chrome-stable').toString().trim()
+  } catch (error) {
+    // If 'which' command fails, fallback to default path
+    return '/usr/bin/google-chrome-stable'
+  }
+}
 
 async function getBrowser(isLocal: boolean): Promise<Browser> {
   if (!browser) {
@@ -25,7 +39,9 @@ async function getBrowser(isLocal: boolean): Promise<Browser> {
     }
 
     if (!isLocal) {
-      puppeteerOptions.executablePath = 'google-chrome-stable'
+      // Initialize chrome path if not already set
+      chromePath = chromePath || findChromePath()
+      puppeteerOptions.executablePath = chromePath
     }
 
     browser = await puppeteer.launch(puppeteerOptions)
