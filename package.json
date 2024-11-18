@@ -1,7 +1,7 @@
 {
   "name": "pdf-renderer",
   "descrption": "Standalone server using Chrome/Puppeteer to generate PDFs from HTML input.",
-  "version": "v1.3.0-rc4",
+  "version": "v1.3.0",
   "email": "oss@dbl.works",
   "url": "https://github.com/dbl-works/pdf-renderer",
   "main": "index.ts",
