@@ -19,8 +19,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Set environment variable to skip the chromium download
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-ENV PUPPETEER_SKIP_DOWNLOAD true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 
 WORKDIR /usr/src/app
 
