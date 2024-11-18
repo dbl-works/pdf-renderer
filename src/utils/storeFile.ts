@@ -17,11 +17,14 @@ export default class StoreFile {
 
       const command = new PutObjectCommand(params)
       s3Client.send(command).then(() => {
+        // eslint-disable-next-line no-console
         console.log(`Successfully uploaded data to ${params.Bucket}/${params.Key}`)
       }).catch((error) => {
+        // eslint-disable-next-line no-console
         console.error(`Error when uploading to S3: ${error}`)
       })
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(`Error when uploading to S3: ${e}`)
     }
   }

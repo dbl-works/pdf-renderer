@@ -1,7 +1,7 @@
 {
   "name": "pdf-renderer",
   "descrption": "Standalone server using Chrome/Puppeteer to generate PDFs from HTML input.",
-  "version": "1.2.0",
+  "version": "v1.3.0-rc4",
   "email": "oss@dbl.works",
   "url": "https://github.com/dbl-works/pdf-renderer",
   "main": "index.ts",
@@ -13,7 +13,7 @@
     "dev": "concurrently -k -p \"[{name}]\" -n \"Typescript,Node\" -c \"blue.bold,yellow.bold\" \"yarn run watch-ts\" \"yarn run server\" ",
     "production": "NODE_ENV=production node dist/index.js",
     "local": "NODE_ENV=development yarn run dev ",
-    "lint": "eslint --ext .js,.ts,.vue src"
+    "lint": "eslint -c .eslintrc.js \"src/**/*.ts\""
   },
   "devDependencies": {
     "@types/express": "5.0.0",
@@ -32,6 +32,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.567.0",
     "express": "^5.0.1",
+    "piscina": "^4.7.0",
     "puppeteer": "^23.6.0"
   }
 }
