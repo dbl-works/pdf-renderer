@@ -1,5 +1,5 @@
 export default class Format {
-  landscape: boolean;
+  landscape: boolean
 
   constructor({ landscape = false } = {}) {
     this.landscape = landscape

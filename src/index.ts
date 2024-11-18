@@ -26,7 +26,7 @@ app.get(['/healthz', '/livez', '/readyz'], async (req: Request, res: Response): 
         used,
         total: size,
         usage_percentage: percentage,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       },
       worker_pool: {
         completed: pool.completed,
@@ -36,8 +36,8 @@ app.get(['/healthz', '/livez', '/readyz'], async (req: Request, res: Response): 
         duration: pool.duration,
         utilization: pool.utilization,
         needsDrain: pool.needsDrain,
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     }))
   } catch (error) {
     // eslint-disable-next-line no-console

@@ -6,13 +6,13 @@ import Options from '../models/options'
 export const pool = new Piscina({
   filename: resolve(__dirname, '../workers/pdf-worker.js'),
   // Leave one CPU for the main thread
-  maxThreads: Math.max(1, require('os').cpus().length - 1)
+  maxThreads: Math.max(1, require('os').cpus().length - 1),
 })
 
 export default class Generator {
-  content: string;
+  content: string
 
-  options: Options;
+  options: Options
 
   constructor(content: string, options?: Options) {
     this.content = content
@@ -43,6 +43,8 @@ export default class Generator {
       // Just check if the pool is available
       return !pool.needsDrain && pool.threads.length > 0
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error checking health:', error)
       return false
     }
   }

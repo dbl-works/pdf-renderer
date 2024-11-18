@@ -1,13 +1,13 @@
 import Format from './format'
 
 export default class Options {
-  filename: string;
+  filename: string
 
-  saveFile: boolean;
+  saveFile: boolean
 
-  pdfMarkup: string;
+  pdfMarkup: string
 
-  format: Format;
+  format: Format
 
   constructor(
     filename = `${Date.now()}`,

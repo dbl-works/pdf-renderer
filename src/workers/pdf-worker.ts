@@ -19,9 +19,9 @@ async function getBrowser(isLocal: boolean): Promise<Browser> {
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
-        '--disable-extensions'
+        '--disable-extensions',
       ],
-      headless: 'new' // https://developer.chrome.com/articles/new-headless/
+      headless: 'new', // https://developer.chrome.com/articles/new-headless/
     }
 
     if (!isLocal) {

@@ -13,7 +13,7 @@
     "dev": "concurrently -k -p \"[{name}]\" -n \"Typescript,Node\" -c \"blue.bold,yellow.bold\" \"yarn run watch-ts\" \"yarn run server\" ",
     "production": "NODE_ENV=production node dist/index.js",
     "local": "NODE_ENV=development yarn run dev ",
-    "lint": "eslint --ext .js,.ts,.vue src"
+    "lint": "eslint -c .eslintrc.js \"src/**/*.ts\""
   },
   "devDependencies": {
     "@types/express": "5.0.0",
