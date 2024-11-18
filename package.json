@@ -32,6 +32,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.567.0",
     "express": "^5.0.1",
+    "piscina": "^4.7.0",
     "puppeteer": "^23.6.0"
   }
 }
