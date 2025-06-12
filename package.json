@@ -13,7 +13,7 @@
     "dev": "concurrently -k -p \"[{name}]\" -n \"Typescript,Node\" -c \"blue.bold,yellow.bold\" \"yarn run watch-ts\" \"yarn run server\" ",
     "production": "NODE_ENV=production node dist/index.js",
     "local": "NODE_ENV=development yarn run dev ",
-    "lint": "eslint -c .eslintrc.js \"src/**/*.ts\""
+    "lint": "eslint --ext .ts ./src"
   },
   "devDependencies": {
     "@types/express": "5.0.0",
@@ -22,7 +22,7 @@
     "@typescript-eslint/eslint-plugin": "8.11.0",
     "@typescript-eslint/parser": "8.11.0",
     "concurrently": "9.0.1",
-    "eslint": "9.13.0",
+    "eslint": "8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
     "nodemon": "^3.1.7",

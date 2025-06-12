@@ -9,7 +9,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 12,
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
   plugins: [
@@ -19,9 +19,16 @@ module.exports = {
     'max-len': 'off',
     'no-alert': 'off',
     'global-require': 'off',
+    'no-console': 'warn',
+    'no-continue': 'off',
+    'no-restricted-syntax': 'off',
+    'no-shadow': 'off',
+    'comma-dangle': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-require-imports': 'off',
+    'import/no-duplicates': 'warn',
     semi: ['error', 'never'],
     indent: 'off',
-    '@typescript-eslint/indent': [2, 2],
     'import/extensions': 'off',
   },
   settings: {

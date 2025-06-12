@@ -17,12 +17,39 @@ let chromePath: string | undefined
 
 // Find Chrome path at startup
 function findChromePath(): string {
+  // For Docker/Linux where we install Chrome directly
+  const defaultPath = '/usr/bin/google-chrome-stable'
+
   try {
-    return execSync('which google-chrome-stable').toString().trim()
+    execSync(`test -x ${defaultPath}`).toString().trim()
+    return defaultPath
   } catch (error) {
-    // If 'which' command fails, fallback to default path
-    return '/usr/bin/google-chrome-stable'
+    console.warn(`Default Chrome path not found: ${defaultPath}. Trying other methods...`)
   }
+
+  // Try finding chrome in PATH, usually the case on dev machines
+  const chromeCommands = [
+    'which google-chrome-stable',
+    'which chromium'
+  ]
+
+  for (const command of chromeCommands) {
+    try {
+      const path = execSync(command).toString().trim()
+      if (path) return path
+    } catch (error) {
+      continue
+    }
+  }
+
+  // Finally, try puppeteer's bundled Chromium
+  try {
+    return require('puppeteer').executablePath()
+  } catch (error) {
+    console.error('Error finding Chrome path:', error)
+  }
+
+  throw new Error('Could not find a valid Chrome executable. Please ensure Chrome is installed or specify the path explicitly.')
 }
 
 async function getBrowser(isLocal: boolean): Promise<Browser> {
