@@ -16,23 +16,23 @@
     "lint": "eslint --ext .ts ./src"
   },
   "devDependencies": {
-    "@types/express": "5.0.0",
-    "@types/node": "22.7.8",
-    "@types/puppeteer": "^5.4.3",
-    "@typescript-eslint/eslint-plugin": "8.11.0",
-    "@typescript-eslint/parser": "8.11.0",
-    "concurrently": "9.0.1",
-    "eslint": "8.56.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.3",
-    "nodemon": "^3.1.7",
-    "ts-node": "^10.4.0",
-    "typescript": "^5.6.3"
+    "@types/express": "5.0.3",
+    "@types/node": "24.0.4",
+    "@types/puppeteer": "5.4.7",
+    "@typescript-eslint/eslint-plugin": "8.35.0",
+    "@typescript-eslint/parser": "8.35.0",
+    "concurrently": "9.2.0",
+    "eslint": "9.29.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.32.0",
+    "nodemon": "3.1.10",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.567.0",
-    "express": "^5.0.1",
-    "piscina": "^4.7.0",
-    "puppeteer": "^23.6.0"
+    "@aws-sdk/client-s3": "3.837.0",
+    "express": "5.1.0",
+    "piscina": "5.1.2",
+    "puppeteer": "24.10.2"
   }
 }
